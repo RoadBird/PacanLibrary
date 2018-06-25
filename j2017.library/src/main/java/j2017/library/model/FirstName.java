@@ -10,7 +10,7 @@ public class FirstName {
 	@DatabaseField(id = true)
 	private Integer id;
 
-	@DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true, columnName = FIELD_NAME)
+	@DatabaseField(canBeNull = false, columnName = FIELD_NAME)
 	private String firstName;
 	
 	public FirstName() {

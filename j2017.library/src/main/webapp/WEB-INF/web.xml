@@ -10,8 +10,18 @@
   	<description></description>
   	<servlet-class>j2017.library.servlets.MainPageServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>FilterBooks</servlet-name>
+  	<display-name>FilterBooks</display-name>
+  	<description></description>
+  	<servlet-class>j2017.library.servlets.FilterBooks</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>MainPageServlet</servlet-name>
   	<url-pattern>/MainPageServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>FilterBooks</servlet-name>
+  	<url-pattern>/filterbooks</url-pattern>
   </servlet-mapping>
 </web-app>

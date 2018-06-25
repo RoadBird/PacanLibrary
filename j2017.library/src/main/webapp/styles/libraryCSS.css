@@ -1,0 +1,123 @@
+.headerDiv {
+	height: 256px;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 30px;
+	min-width: 800px;
+}
+
+.headerDiv img {
+	text-align: center;
+	float: left;
+	width: 256px;
+	height: 256px;
+}
+
+#headerText {
+	padding: 20px;
+	text-align: center;
+	font-size: 26pt;
+	margin-left: 256px;
+}
+
+#headerContacts {
+	margin-top: 30px;
+	margin-bottom: 30px;
+	font-size: 12pt;
+	list-style-position: inside;
+}
+
+.menuDiv {
+	clear: left;
+	padding-top: 20px;
+	margin-left: 20px;
+	margin-right: 20px;
+	height: 21px;
+	overflow: hidden;
+}
+
+.menuDiv p {
+	display: inline;
+}
+
+.menuDiv .menuBut {
+	display: inline-block;
+	position: relative;
+	height: 40px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-top: 0px;
+	text-decoration: underline;
+}
+
+.booksDiv {
+	clear: left;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 10px;
+	overflow: hidden;
+}
+
+#filtersBooks {
+	float: left;
+	width: 256px;
+	text-align: center;
+	padding-top: 5px;
+	padding-bottom: 10px;
+}
+
+.booksDiv select {
+	width: 200px;
+}
+
+#listBooks {
+	padding-top: 10px;
+	margin-left: 256px;
+	min-width: 800px;
+}
+.tableBooks {
+	width: 100%;
+	align: center;
+	border: solid green 2px;
+}
+.tableBooks td, th{
+	border: solid black 1px;
+}
+
+.imgCol{
+	width: 125px;
+	text-align: center;
+}
+.imgCol img{
+	width: 120px;
+	height: 120px;
+}
+.descriptionCell{
+	height: 120px;
+	max-height: 120px;
+	padding-left: 5px;
+}
+.descriptionCell div{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.footerDiv {
+	clear: left;
+	padding-left: 20px;
+	height: 15%;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+#textArea {
+	width: 80%;
+	height: 100px;
+}
+#listBooks td{
+	padding-left: 5px;
+	padding-right: 15px;
+}
+#listBooks table{
+	width: 100%;
+}

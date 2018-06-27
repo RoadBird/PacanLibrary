@@ -26,9 +26,9 @@ function filterBooksRequest() {
 			console.log("Error geting books: " + error);
 		},
 		data : JSON.stringify({
-			"author" : authorInput,
-			"title" : titleInput,
-			"published" : yearInput
+			"author" : "Polly",//authorInput,
+			"title" : "Grand book",//titleInput,
+			"published" : "864"//yearInput
 		})
 	});
 }

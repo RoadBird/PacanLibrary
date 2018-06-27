@@ -3,23 +3,25 @@ package j2017.library.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "firstnames")
-public class FirstName {
-	public static final String FIELD_NAME = "fname";
+@DatabaseTable(tableName = "middlenames")
+public class MiddleName {
+public static final String FIELD_NAME = "mname";
 	
 	@DatabaseField(id = true)
 	private Integer id;
 
 	@DatabaseField(canBeNull = false, columnName = FIELD_NAME)
-	private String firstName;
-	
-	public FirstName() {
+	private String middleName;
+
+	public MiddleName() {
+		super();
 	}
 
-	public FirstName(String firstName) {
-		this.firstName = firstName;
+	public MiddleName(String middleName) {
+		super();
+		this.middleName = middleName;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -28,12 +30,12 @@ public class FirstName {
 		this.id = id;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public String getMiddleName() {
+		return middleName;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class FirstName {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FirstName other = (FirstName) obj;
+		MiddleName other = (MiddleName) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

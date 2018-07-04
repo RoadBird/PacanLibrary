@@ -29,6 +29,7 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
+import database.DbHelper;
 import j2017.library.model.Author;
 import j2017.library.model.Book;
 import j2017.library.model.FirstName;
@@ -40,13 +41,11 @@ import j2017.library.model.MiddleName;
  */
 public class FilterBooks extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final static String DATABASE_URL = "jdbc:mysql://localhost:3306/library?user=root&password=180794Mm&serverTimezone=UTC";
 	private Dao<FirstName, Integer> firstNameDao;
 	private Dao<MiddleName, Integer> middleNameDao;
 	private Dao<LastName, Integer> lastNameDao;
 	private Dao<Author, Integer> authorDao;
 	private Dao<Book, Integer> bookDao;
-	private JdbcConnectionSource connectionSource = null;
 	private Logger logger = LogManager.getLogger(FilterBooks.class.getName());
 	private Gson gson;
 
@@ -61,20 +60,12 @@ public class FilterBooks extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		try {
-			connectionSource = new JdbcConnectionSource(DATABASE_URL);
-			firstNameDao = DaoManager.createDao(connectionSource, FirstName.class);
-			lastNameDao = DaoManager.createDao(connectionSource, LastName.class);
-			middleNameDao = DaoManager.createDao(connectionSource, MiddleName.class);
-			authorDao = DaoManager.createDao(connectionSource, Author.class);
-			bookDao = DaoManager.createDao(connectionSource, Book.class);
-			logger.info("Connection to database done: " + connectionSource);
-			gson = new Gson();
-		} catch (SQLException e) {
-			logger.error("Connection to database fail " + e.getMessage());
-			// TODO handle database fail
-		}
-
+		firstNameDao = DbHelper.getInstance().getFirstNameDao();
+		middleNameDao = DbHelper.getInstance().getMiddleNameDao();
+		lastNameDao = DbHelper.getInstance().getLastNameDao();
+		authorDao = DbHelper.getInstance().getAuthorDao();
+		bookDao = DbHelper.getInstance().getBookDao();
+		gson = new Gson();
 	}
 
 	/**
@@ -86,16 +77,12 @@ public class FilterBooks extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		String term = request.getParameter("term");
-		String param = getServletConfig().getInitParameter("filter");
-		if (param != null && param.equals("author")) {
-			response.getWriter().write(getJsonFiltredAuthors(term));
-		} else if (param != null && param.equals("book")) {
-			String author = request.getParameter("author");
-			if (author == null || author.trim().equals("")) {
-				response.getWriter().write(getJsonFiltredBooks(term, null));
-			} else {
-				response.getWriter().write(getJsonFiltredBooks(term, author));
-			}
+		logger.info("Request autocomplete for books by: " + term);
+		String author = request.getParameter("author");
+		if (author == null || author.trim().equals("")) {
+			response.getWriter().write(getJsonFiltredBooks(term, null));
+		} else {
+			response.getWriter().write(getJsonFiltredBooks(term, author));
 		}
 	}
 
@@ -117,22 +104,24 @@ public class FilterBooks extends HttpServlet {
 		logger.info("Request parameters: author name - " + rb.author + ", title book - " + rb.titleBook
 				+ ", published : " + rb.firstPublished + " to " + rb.lastPublished);
 		List<Author> aList = getAuthorsFromBd(rb.author);
-		if(aList.isEmpty()){
+		if (aList.isEmpty()) {
 			request.setAttribute("books", null);
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 			return;
 		}
-		List<Book> bList = getBooksFromBdByTitle(rb.titleBook, Date.valueOf(rb.firstPublished), Date.valueOf(rb.lastPublished));
-		if(bList.isEmpty()){
+		List<Book> bList = getBooksFromBdByTitle(rb.titleBook, Date.valueOf(rb.firstPublished),
+				Date.valueOf(rb.lastPublished));
+		if (bList.isEmpty()) {
 			request.setAttribute("books", null);
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 			return;
 		}
-		for(Author a : aList){
+		for (Author a : aList) {
 			bList.retainAll(getBooksFromBdByAuthor(a));
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}
-		request.setAttribute("books", bList);;
+		request.setAttribute("books", bList);
+		;
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}
 
@@ -144,11 +133,11 @@ public class FilterBooks extends HttpServlet {
 		List<Author> authorList = new LinkedList<Author>();
 		try {
 			String s;
-			if (author == null || (s = author.replaceAll("\\.", "").replaceAll("-", "").trim()) == "") {
+			if (author == null || (s = author.replaceAll("\\.", "").trim()) == "") {
 				authorList = authorDao.queryForAll();
 				return authorList;
 			}
-			String[] names = s.split(" ");
+			String[] names = s.split("\\s+");
 			for (int i = 0; i < names.length; i++) {
 				fnames.where().like(FirstName.FIELD_NAME, "%" + names[i] + "%");
 				mnames.where().like(MiddleName.FIELD_NAME, "%" + names[i] + "%");
@@ -175,17 +164,6 @@ public class FilterBooks extends HttpServlet {
 
 	}
 
-	private synchronized String getJsonFiltredAuthors(String term) {
-		LinkedList<String> names = new LinkedList<>();
-		for (Author author : getAuthorsFromBd(term)) {
-			String middleName = author.getMiddleNameId().getMiddleName() == "" ? ""
-					: " " + author.getMiddleNameId().getMiddleName();
-			String lastName = author.getLastNameId().getLastName() == "" ? ""
-					: " " + author.getLastNameId().getLastName();
-			names.add(author.getFirstNameId().getFirstName() + middleName + lastName);
-		}
-		return gson.toJson(names);
-	}
 
 	private synchronized List<Book> getBooksFromBdByTitle(String title, Date firstYear, Date lastYear) {
 		QueryBuilder<Book, Integer> queryBuilder = bookDao.queryBuilder();
@@ -214,7 +192,7 @@ public class FilterBooks extends HttpServlet {
 		}
 		return books;
 	}
-
+	
 	private synchronized List<Book> getBooksFromBdByAuthor(Author author) {
 		if (author != null) {
 			try {
@@ -223,16 +201,19 @@ public class FilterBooks extends HttpServlet {
 				logger.error(e.getMessage());
 			}
 		}
-		return new LinkedList<>();
+		return null;
 	}
 
 	private synchronized String getJsonFiltredBooks(String term, String author) {
 		Set<String> titles = new HashSet<>();
 		Set<Book> bookSet = new HashSet<>();
 		if (author != null) {
-			for (Author a : getAuthorsFromBd(author)) {
-				bookSet.addAll(getBooksFromBdByAuthor(a));
-				bookSet.retainAll(getBooksFromBdByTitle(term, null, null));
+			List<Author> authorList = getAuthorsFromBd(author);
+			if (authorList != null) {
+				for (Author a : authorList) {
+					bookSet.addAll(getBooksFromBdByAuthor(a));
+					bookSet.retainAll(getBooksFromBdByTitle(term, null, null));
+				}
 			}
 		} else {
 			bookSet.addAll(getBooksFromBdByTitle(term, null, null));
@@ -251,18 +232,4 @@ public class FilterBooks extends HttpServlet {
 		private String lastPublished;
 
 	}
-
-	@Override
-	public void destroy() {
-		super.destroy();
-		if (connectionSource != null) {
-			try {
-				connectionSource.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-
 }

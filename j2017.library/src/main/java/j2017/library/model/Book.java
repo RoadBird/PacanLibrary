@@ -7,11 +7,11 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "books")
 public class Book {
-	private static final String AUTHOR = "id_authors";
-	private static final String TITLE = "title";
-	private static final String RELEASE_DATE = "release_date";
-	private static final String DESCRIPTION = "description";
-	private static final String COVER_PATH = "cover_path";
+	public static final String AUTHOR = "id_author";
+	public static final String TITLE = "title";
+	public static final String RELEASE_DATE = "release_date";
+	public static final String DESCRIPTION = "description";
+	public static final String COVER_PATH = "cover_path";
 	
 	
 	@DatabaseField(id = true)

@@ -7,29 +7,12 @@
 	<servlet>
 		<servlet-name>FilterAuthors</servlet-name>
 		<description></description>
-		<servlet-class>j2017.library.servlets.FilterBooks</servlet-class>
-		<init-param>
-			<param-name>filter</param-name>
-			<param-value>author</param-value>
-		</init-param>
+		<servlet-class>j2017.library.servlets.FilterAuthors</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>FilterBooks</servlet-name>
 		<description></description>
 		<servlet-class>j2017.library.servlets.FilterBooks</servlet-class>
-		<init-param>
-			<param-name>filter</param-name>
-			<param-value>book</param-value>
-		</init-param>
-	</servlet>
-	<servlet>
-		<servlet-name>Filter</servlet-name>
-		<description></description>
-		<servlet-class>j2017.library.servlets.FilterBooks</servlet-class>
-		<init-param>
-			<param-name>filter</param-name>
-			<param-value>all</param-value>
-		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>FilterAuthors</servlet-name>
@@ -38,9 +21,5 @@
 	<servlet-mapping>
 		<servlet-name>FilterBooks</servlet-name>
 		<url-pattern>/filterBooks</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Filter</servlet-name>
-		<url-pattern>/filter</url-pattern>
 	</servlet-mapping>
 </web-app>

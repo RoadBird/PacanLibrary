@@ -15,6 +15,7 @@ $(document).ready(function() {
             $.ajax({
                 url: "filterAuthors",
                 dataType: "json",
+                delay: 500,
                 data: request,
                 success: function(data, textStatus, jqXHR) {
                     response(data);
@@ -38,6 +39,7 @@ $(document).ready(function() {
                 	term : request.term,
                 	author : authorFilter.val()
                 },
+                delay: 500,
                 success: function(data, textStatus, jqXHR) {
                     response(data);
                 },

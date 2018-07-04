@@ -3,18 +3,16 @@
 <head>
 <meta charset="utf-8" content="library">
 <link rel="stylesheet" href="styles/libraryCSS.css">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="scripts/indexPageScripts.js"></script>
 <title>Library</title>
 </head>
 <body>
 	<div class="headerDiv">
-		<img alt="Book"
-			src="http://icons.veryicon.com/256/System/Line/Open%20Book.png">
+		<img alt="Book" src="http://icons.veryicon.com/256/System/Line/Open%20Book.png">
 		<div id="headerText">
-			<p id="Pe">MY BEST LIBRARY</p>
+		<p id="Pe" >
+			MY BEST LIBRARY</p>
 			<div id="headerContacts">
 				Contacts
 				<ul>
@@ -40,23 +38,20 @@
 
 	<div class="booksDiv">
 		<div id="filtersBooks">
-			<p>Filters:</p>
-			<br>
-			<p>Author name:</p>
-			<p>
-				<input id="authorFilter">
+			<p>Filters:</p><br>
+			<p>Author name: </p>
+			<p><input id="authorFilter">
 			</p>
-			<p>Title book:</p>
-			<p>
-				<input id="titleFilter">
+			<p>Title book: </p>
+			<p><input id="titleFilter">
 			</p>
-			<p>Publish year:</p>
-			<p>
-				<input id="publishFirstYearFilter"> - <input id="publishLastYearFilter">
+			<p>Publish year: </p>
+			<p><input id="publishYearFilter">
 			</p>
 			<button id="filterButton">Filter</button>
 		</div>
-		<div id="listBooks"></div>
+		<div id="listBooks">
+		</div>
 	</div>
 
 	<div class="footerDiv">

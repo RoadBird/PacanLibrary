@@ -3,7 +3,7 @@ package j2017.library.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "firstnames")
+@DatabaseTable(tableName = "first_names")
 public class FirstName {
 	public static final String FIELD_NAME = "fname";
 	

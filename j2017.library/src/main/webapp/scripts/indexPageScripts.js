@@ -1,34 +1,69 @@
 var authorFilter;
 var titleFilter;
-var publishYearFilter;
+var publishFirstYearFilter;
+var publishLastYearFilter;
 
 $(document).ready(function() {
-	authorFilter = $("#authorFilter")[0];
-	titleFilter = $("#titleFilter")[0];
-	publishYearFilter = $("#publishYearFilter")[0];
-	$("#filterButton").click(filterBooksRequest)
-}
-
-);
+	authorFilter = $("#authorFilter");
+	titleFilter = $("#titleFilter");
+	publishFirstYearFilter = $("#publishFirstYearFilter");
+	publishLastYearFilter = $("#publishLastYearFilter");
+	$("#filterButton").click(filterBooksRequest);
+	$("#authorFilter").autocomplete({
+        minLength: 1,
+        source: function(request, response) {
+            $.ajax({
+                url: "filterAuthors",
+                dataType: "json",
+                data: request,
+                success: function(data, textStatus, jqXHR) {
+                    response(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                     console.log(textStatus);
+                }
+            });
+        }
+    });
+	$("#authorFilter").on("autocompleteselect", function (e, ui) {
+		authorValue = ui.item.value;
+    });
+	$("#titleFilter").autocomplete({
+        minLength: 1,
+        source: function(request, response) {
+            $.ajax({
+                url: "filterBooks",
+                dataType: "json",
+                data: {
+                	term : request.term,
+                	author : authorFilter.val()
+                },
+                success: function(data, textStatus, jqXHR) {
+                    response(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                     console.log(textStatus);
+                }
+            });
+        }
+    });
+});
 
 function filterBooksRequest() {
-	var authorInput = authorFilter.value;
-	var titleInput = titleFilter.value;
-	var yearInput = publishYearFilter.value;
 	$.ajax({
-		url : "filterbooks",
+		"url" : "filter",
 		"type" : "POST",
 		"success" : function(result, status, xhr) {
 			console.log("Successfull request: " + result);
-
 		},
 		"error" : function(xhr, status, error) {
 			console.log("Error geting books: " + error);
 		},
 		data : JSON.stringify({
-			"author" : "Polly",//authorInput,
-			"title" : "Grand book",//titleInput,
-			"published" : "864"//yearInput
+			"author" : authorFilter.val(),
+			"title" : titleFilter.val(),
+			"firstPublished" : publishFirstYearFilter.val(),
+			"lastPublished" : publishLastYearFilter.val()
 		})
 	});
 }

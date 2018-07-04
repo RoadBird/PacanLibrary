@@ -3,16 +3,18 @@
 <head>
 <meta charset="utf-8" content="library">
 <link rel="stylesheet" href="styles/libraryCSS.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="scripts/indexPageScripts.js"></script>
 <title>Library</title>
 </head>
 <body>
 	<div class="headerDiv">
-		<img alt="Book" src="http://icons.veryicon.com/256/System/Line/Open%20Book.png">
+		<img alt="Book"
+			src="http://icons.veryicon.com/256/System/Line/Open%20Book.png">
 		<div id="headerText">
-		<p id="Pe" >
-			MY BEST LIBRARY</p>
+			<p id="Pe">MY BEST LIBRARY</p>
 			<div id="headerContacts">
 				Contacts
 				<ul>
@@ -39,31 +41,22 @@
 	<div class="booksDiv">
 		<div id="filtersBooks">
 			<p>Filters:</p>
+			<br>
+			<p>Author name:</p>
 			<p>
-				<select id="authorFilter">
-					<option value="s1.1" selected>s1.1</option>
-					<option value="s1.2" selected>s1.2</option>
-					<option value="s1.3" selected>s1.3</option>
-				</select>
+				<input id="authorFilter">
 			</p>
+			<p>Title book:</p>
 			<p>
-				<select id="titleFilter">
-					<option value="s2.1" selected>s2.1</option>
-					<option value="s2.2" selected>s2.2</option>
-					<option value="s2.3" selected>s2.3</option>
-				</select>
+				<input id="titleFilter">
 			</p>
+			<p>Publish year:</p>
 			<p>
-				<select id="publishYearFilter">
-					<option value="s3.1" selected>s3.1</option>
-					<option value="s3.2" selected>s3.2</option>
-					<option value="s3.3" selected>s3.3</option>
-				</select>
+				<input id="publishFirstYearFilter"> - <input id="publishLastYearFilter">
 			</p>
 			<button id="filterButton">Filter</button>
 		</div>
-		<div id="listBooks">
-		</div>
+		<div id="listBooks"></div>
 	</div>
 
 	<div class="footerDiv">

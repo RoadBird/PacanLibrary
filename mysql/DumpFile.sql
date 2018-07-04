@@ -63,7 +63,7 @@ DROP TABLE IF EXISTS `books`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `books` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `tittle` varchar(100) NOT NULL,
+  `title` varchar(100) NOT NULL,
   `id_authors` bigint(20) unsigned NOT NULL,
   `release_date` date DEFAULT NULL,
   `book_description` text,

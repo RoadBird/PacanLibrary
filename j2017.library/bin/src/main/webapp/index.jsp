@@ -38,27 +38,15 @@
 
 	<div class="booksDiv">
 		<div id="filtersBooks">
-			<p>Filters:</p>
-			<p>
-				<select id="authorFilter">
-					<option value="s1.1" selected>s1.1</option>
-					<option value="s1.2" selected>s1.2</option>
-					<option value="s1.3" selected>s1.3</option>
-				</select>
+			<p>Filters:</p><br>
+			<p>Author name: </p>
+			<p><input id="authorFilter">
 			</p>
-			<p>
-				<select id="titleFilter">
-					<option value="s2.1" selected>s2.1</option>
-					<option value="s2.2" selected>s2.2</option>
-					<option value="s2.3" selected>s2.3</option>
-				</select>
+			<p>Title book: </p>
+			<p><input id="titleFilter">
 			</p>
-			<p>
-				<select id="publishYearFilter">
-					<option value="s3.1" selected>s3.1</option>
-					<option value="s3.2" selected>s3.2</option>
-					<option value="s3.3" selected>s3.3</option>
-				</select>
+			<p>Publish year: </p>
+			<p><input id="publishYearFilter">
 			</p>
 			<button id="filterButton">Filter</button>
 		</div>

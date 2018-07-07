@@ -2,10 +2,11 @@ package j2017.library.servlets;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -21,13 +22,9 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
 
 import database.DbHelper;
 import j2017.library.model.Author;
@@ -102,27 +99,35 @@ public class FilterBooks extends HttpServlet {
 		logger.info("JSON body: " + body);
 		RequestBody rb = gson.fromJson(body, RequestBody.class);
 		logger.info("Request parameters: author name - " + rb.author + ", title book - " + rb.titleBook
-				+ ", published : " + rb.firstPublished + " to " + rb.lastPublished);
+				+ ", could be published from " + rb.firstPublished + " to " + rb.lastPublished);
+		DateFormat format = new SimpleDateFormat("yyyy");
+		Date firstPublishedDate = null;
+		Date lastPublishedDate = null;
+		try {
+			firstPublishedDate = new Date(format.parse(rb.firstPublished).getTime());
+		} catch (ParseException e1) {
+			logger.error(e1.getMessage());
+		}
+		try {
+			lastPublishedDate = new Date(format.parse(rb.lastPublished).getTime());
+		} catch (ParseException e1) {
+			logger.error(e1.getMessage());
+		}
+		logger.info(firstPublishedDate + " -- " + lastPublishedDate);
 		List<Author> aList = getAuthorsFromBd(rb.author);
-		if (aList.isEmpty()) {
-			request.setAttribute("books", null);
-			request.getRequestDispatcher("index.jsp").forward(request, response);
-			return;
-		}
-		List<Book> bList = getBooksFromBdByTitle(rb.titleBook, Date.valueOf(rb.firstPublished),
-				Date.valueOf(rb.lastPublished));
-		if (bList.isEmpty()) {
-			request.setAttribute("books", null);
-			request.getRequestDispatcher("index.jsp").forward(request, response);
-			return;
-		}
-		for (Author a : aList) {
-			bList.retainAll(getBooksFromBdByAuthor(a));
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+		List<Book> bList = null;
+		if (aList != null && !aList.isEmpty()) {
+			bList = getBooksFromBdByTitle(rb.titleBook, firstPublishedDate, lastPublishedDate);
+			if (bList != null && !bList.isEmpty()) {
+				Set<Book> bookSet = Collections.synchronizedSet(new HashSet<>());
+				for (Author a : aList) {
+					bookSet.addAll(getBooksFromBdByAuthor(a));
+				}				
+				bList.retainAll(bookSet);
+			}
 		}
 		request.setAttribute("books", bList);
-		;
-		request.getRequestDispatcher("index.jsp").forward(request, response);
+		request.getRequestDispatcher("/pages/FilterResult.jsp").forward(request, response);
 	}
 
 	private synchronized List<Author> getAuthorsFromBd(String author) {
@@ -164,7 +169,6 @@ public class FilterBooks extends HttpServlet {
 
 	}
 
-
 	private synchronized List<Book> getBooksFromBdByTitle(String title, Date firstYear, Date lastYear) {
 		QueryBuilder<Book, Integer> queryBuilder = bookDao.queryBuilder();
 		LinkedList<Book> books = new LinkedList<>();
@@ -182,8 +186,13 @@ public class FilterBooks extends HttpServlet {
 				queryBuilder.where().like(Book.TITLE, "%" + title + "%").and().le(Book.RELEASE_DATE, lastYear);
 				books.addAll(queryBuilder.query());
 			} else if (firstYear != null && lastYear != null) {
-				queryBuilder.where().like(Book.TITLE, "%" + title + "%").and().between(Book.RELEASE_DATE, firstYear,
-						lastYear);
+				if (firstYear.before(lastYear)) {
+					queryBuilder.where().like(Book.TITLE, "%" + title + "%").and().between(Book.RELEASE_DATE, firstYear,
+							lastYear);
+				} else {
+					queryBuilder.where().like(Book.TITLE, "%" + title + "%").and().between(Book.RELEASE_DATE, lastYear,
+							firstYear);
+				}
 				books.addAll(queryBuilder.query());
 			}
 		} catch (SQLException e) {
@@ -192,7 +201,7 @@ public class FilterBooks extends HttpServlet {
 		}
 		return books;
 	}
-	
+
 	private synchronized List<Book> getBooksFromBdByAuthor(Author author) {
 		if (author != null) {
 			try {

@@ -53,8 +53,10 @@ $(document).ready(function() {
 
 function filterBooksRequest() {
 	$.ajax({
-		"url" : "filter",
+		"url" : "filterBooks",
 		"type" : "POST",
+		"contentType" : "text/html",
+		"dataType" : "html",
 		"success" : function(result, status, xhr) {
 			console.log("Successfull request: " + result);
 		},

@@ -128,6 +128,12 @@ public class Author {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return firstNameId.getFirstName() + " " + middleNameId.getMiddleName() + " " + lastNameId.getLastName()
+				+ " " + authorAlias.trim();
+	}
 	
 	
 }

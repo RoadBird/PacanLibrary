@@ -7,6 +7,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="scripts/indexPageScripts.js"></script>
+<%@ taglib prefix = "ex" uri = "WEB-INF/custom.tld"%>
 <title>Library</title>
 </head>
 <body>

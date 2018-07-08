@@ -2,10 +2,14 @@
    <tlib-version>1.0</tlib-version>
    <jsp-version>2.0</jsp-version>
    <short-name>Library TLD</short-name>
-   
    <tag>
-      <name>TableBooks</name>
-      <tag-class>tags.TableBooks</tag-class>
+      <name>HeadTag</name>
+      <tag-class>tags.HeadTag</tag-class>
+      <body-content>empty</body-content>
+   </tag>
+   <tag>
+      <name>FootTag</name>
+      <tag-class>tags.FootTag</tag-class>
       <body-content>empty</body-content>
    </tag>
 </taglib>

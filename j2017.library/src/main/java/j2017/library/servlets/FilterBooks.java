@@ -38,6 +38,7 @@ import j2017.library.model.MiddleName;
  */
 public class FilterBooks extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final String responsePage = "/pages/FilterResult.jsp";
 	private Dao<FirstName, Integer> firstNameDao;
 	private Dao<MiddleName, Integer> middleNameDao;
 	private Dao<LastName, Integer> lastNameDao;
@@ -127,7 +128,7 @@ public class FilterBooks extends HttpServlet {
 			}
 		}
 		request.setAttribute("books", bList);
-		request.getRequestDispatcher("/pages/FilterResult.jsp").forward(request, response);
+		request.getRequestDispatcher(responsePage).forward(request, response);
 	}
 
 	private synchronized List<Author> getAuthorsFromBd(String author) {
@@ -162,8 +163,7 @@ public class FilterBooks extends HttpServlet {
 				queryAuthor.reset();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return authorList;
 
@@ -172,7 +172,7 @@ public class FilterBooks extends HttpServlet {
 	private synchronized List<Book> getBooksFromBdByTitle(String title, Date firstYear, Date lastYear) {
 		QueryBuilder<Book, Integer> queryBuilder = bookDao.queryBuilder();
 		LinkedList<Book> books = new LinkedList<>();
-		title = title.trim();
+		title = title.replaceAll("'", "\\\\'").trim();
 		try {
 			if ((title == null || title == "") && firstYear == null && lastYear == null) {
 				books.addAll(bookDao.queryForAll());

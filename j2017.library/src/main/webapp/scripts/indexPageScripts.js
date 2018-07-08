@@ -59,6 +59,9 @@ function filterBooksRequest() {
 		"dataType" : "html",
 		"success" : function(result, status, xhr) {
 			console.log("Successfull request: " + result);
+			document.open();
+			document.write(result);
+			document.close();
 		},
 		"error" : function(xhr, status, error) {
 			console.log("Error geting books: " + error);

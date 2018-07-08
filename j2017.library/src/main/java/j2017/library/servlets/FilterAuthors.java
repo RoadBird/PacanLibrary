@@ -103,8 +103,7 @@ public class FilterAuthors extends HttpServlet {
 				queryAuthor.reset();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return authorList;
 

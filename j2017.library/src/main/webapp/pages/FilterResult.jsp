@@ -6,8 +6,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="styles/libraryCSS.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="scripts/indexPageScripts.js"></script>
+<%@ taglib prefix = "ex" uri = "../WEB-INF/custom.tld"%>
+<title>Library</title>
 </head>
 <body>
+	<ex:HeadTag/>
+	<div id="listBooks">
 	<%
 		List<Book> bookList = (List<Book>) request.getAttribute("books");
 		if (bookList != null && !bookList.isEmpty()) {
@@ -45,14 +54,16 @@
 				%>
 			</td>
 		</tr>
+		<% } %>		 
+		</table>
 		<%
-			}
 			} else {
 		%>
 		<h3>There are no results for your request</h3>
 		<%
 			}
 		%>
-	</table>
+	</div>
+	<ex:FootTag/>
 </body>
 </html>

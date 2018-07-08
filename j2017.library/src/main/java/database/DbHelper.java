@@ -17,7 +17,7 @@ import j2017.library.model.LastName;
 import j2017.library.model.MiddleName;
 
 public class DbHelper {
-	private final static String DATABASE_URL = "jdbc:mysql://localhost:3306/library?user=root&password=180794Mm&serverTimezone=UTC";
+	private final static String DATABASE_URL = "jdbc:mysql://localhost:3306/library?user=root&password=admin&serverTimezone=UTC";
 	private Dao<FirstName, Integer> firstNameDao;
 	private Dao<MiddleName, Integer> middleNameDao;
 	private Dao<LastName, Integer> lastNameDao;
